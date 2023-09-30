@@ -1,0 +1,14 @@
+{
+    "name":"HelpMeOut",
+    "description":"Screen record and share screens easily",
+    "version":"1.0",
+    "manifest_version":3,
+    "action":{
+        "default_title":"Screen Record",
+        "default_popup":"index.html",
+        "default_icon":{
+            "16":"vite.svg",
+            "128":"vite.svg"
+        }
+    }
+}
