@@ -222,7 +222,7 @@ const handleStartRecording = async () => {
         Click here to view the recorded video
       </a> */}
       <div className="videobox">
-        <video ref={videoRef} autoPlay playsInline muted={!isCameraOn} />
+        <video ref={videoRef} autoPlay playsInline  />
       </div>
     </div>
   );
