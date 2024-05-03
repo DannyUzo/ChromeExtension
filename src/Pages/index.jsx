@@ -188,7 +188,6 @@ const handleStartRecording = async () => {
       <div className="text">
         <p>This extension helps you record and share help videos with ease</p>
       </div>
-
       <div className="SetVidAud">
         <div className="video">
           <div className="box">
@@ -217,12 +216,8 @@ const handleStartRecording = async () => {
           </button>
         )}
       </div>
-
-      {/* <a href={a.href} target="_blank" rel="noreferrer">
-        Click here to view the recorded video
-      </a> */}
       <div className="videobox">
-        <video ref={videoRef} autoPlay playsInline  />
+        <video ref={videoRef} autoPlay playsInline muted={!isCameraOn} />
       </div>
     </div>
   );
