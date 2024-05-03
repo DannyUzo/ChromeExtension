@@ -16,41 +16,42 @@ const Main = () => {
   const cameraActiveRef = useRef(true); // Use useRef for camera activation
   const audioActiveRef = useRef(true);
 
-  const handleStartRecording = async () => {
-    try {
-      const constraints = {
-        video: cameraActiveRef.current ? { mediaSource: "screen" } : false,
-        audio: audioActiveRef.current ? true : false,
-      };
+const handleStartRecording = async () => {
+  try {
+    const constraints = {
+      video: cameraActiveRef.current ? { mediaSource: "screen" } : false,
+      audio: audioActiveRef.current ? true : false,
+    };
 
-      const userStream = await navigator.mediaDevices.getDisplayMedia(
-        constraints
-      );
-      setStream(userStream);
-      // Use the stream for recording or displaying in a video element
-      setRecording(true);
+    const userStream = await navigator.mediaDevices.getDisplayMedia(constraints);
+    setStream(userStream);
+    // Use the stream for recording or displaying in a video element
+    setRecording(true);
 
-      // Create a new MediaRecorder instance and store it in the useRef
-      mediaRecorderRef.current = new MediaRecorder(userStream);
+    // Create a new MediaRecorder instance and store it in the useRef
+    mediaRecorderRef.current = new MediaRecorder(userStream);
 
-      // Event handler for data available
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          const videoBlob = new Blob([event.data], { type: "video/webm" });
-          videoRef.current.src = URL.createObjectURL(videoBlob);
-          linkRef.current = videoRef.current.src; // Store the video link in the ref
-        }
-      };
+    // Event handler for data available
+    mediaRecorderRef.current.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        const videoBlob = new Blob([event.data], { type: "video/webm" });
+        videoRef.current.src = URL.createObjectURL(videoBlob);
+        linkRef.current = videoRef.current.src; // Store the video link in the ref
+      }
+    };
 
-      // Start recording
-      mediaRecorderRef.current.start();
-    } catch (error) {
-      // Handle errors, e.g., user denied permission
-      console.error("Error capturing screen:", error);
-    }
-  };
+    // Start recording
+    mediaRecorderRef.current.start();
+  } catch (error) {
+    // Handle errors, e.g., user denied permission
+    console.error("Error capturing screen:", error);
+  }
+};
 
   const handleSaveRecording = (event) => {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+    mediaRecorderRef.current.stop();
+  }
     const blob = new Blob([event.data], { type: "video/webm" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -61,37 +62,9 @@ const Main = () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-  const handleStopRecording = () => {
-    // Implement stop recording logic here
-    if (stream) {
-      const tracks = stream.getTracks();
-
-      tracks.forEach((track) => {
-        track.stop(); // Stop each track in the stream
-      });
-
-      setRecording(false); // Update the recording state to false
-      setStream(null); // Clear the stream from state
-      handleSaveRecording();
-      setIsCameraOn((prevState) => !prevState);
-      setIsAudioOn((prevState) => !prevState);
-      // Stop the MediaRecorder instance
-      if (
-        mediaRecorderRef.current &&
-        mediaRecorderRef.current.state !== "inactive"
-      ) {
-        mediaRecorderRef.current.stop();
-      }
-
-      // Set the src attribute of the video element
-      if (videoRef.current) {
-        videoRef.current.src = linkRef.current;
-      }
-    }
-  };
-
   
-
+  
+  
   useEffect(() => {
     const accessWebcam = async () => {
       try {
@@ -178,6 +151,37 @@ const Main = () => {
   const handleToggleAudio = () => {
     setIsAudioOn((prevState) => !prevState);
   };
+
+
+  const handleStopRecording = () => {
+    // Implement stop recording logic here
+    if (stream) {
+      const tracks = stream.getTracks();
+
+      tracks.forEach((track) => {
+        track.stop(); // Stop each track in the stream
+      });
+      setIsCameraOn(false);
+      setIsAudioOn(false);
+      setRecording(false); // Update the recording state to false
+      setStream(null); // Clear the stream from state
+      handleSaveRecording();
+      // Stop the MediaRecorder instance
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== "inactive"
+      ) {
+        mediaRecorderRef.current.stop();
+      }
+
+      // Set the src attribute of the video element
+      if (videoRef.current) {
+        videoRef.current.src = linkRef.current;
+      }
+    }
+  };
+
+
   return (
     <div className="main">
       <Header />
