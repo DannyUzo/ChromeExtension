@@ -50,6 +50,17 @@ const Main = () => {
     }
   };
 
+  const handleSaveRecording = (event) => {
+    const blob = new Blob([event.data], { type: "video/webm" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'recorded_video.webm'; // Set the filename
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
   const handleStopRecording = () => {
     // Implement stop recording logic here
     if (stream) {
@@ -61,7 +72,9 @@ const Main = () => {
 
       setRecording(false); // Update the recording state to false
       setStream(null); // Clear the stream from state
-
+      handleSaveRecording();
+      setIsCameraOn((prevState) => !prevState);
+      setIsAudioOn((prevState) => !prevState);
       // Stop the MediaRecorder instance
       if (
         mediaRecorderRef.current &&
@@ -77,17 +90,6 @@ const Main = () => {
     }
   };
 
-  const handleSaveRecording = () => {
-    const blob = new Blob([event.data], { type: "video/webm" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'recorded_video.webm'; // Set the filename
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
   
 
   useEffect(() => {
@@ -212,9 +214,9 @@ const Main = () => {
         )}
       </div>
 
-      <a href={a.href} target="_blank" rel="noreferrer">
+      {/* <a href={a.href} target="_blank" rel="noreferrer">
         Click here to view the recorded video
-      </a>
+      </a> */}
       <div className="videobox">
         <video ref={videoRef} autoPlay playsInline muted={!isCameraOn} />
       </div>
