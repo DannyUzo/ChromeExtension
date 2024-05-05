@@ -116,7 +116,7 @@ const handleStartRecording = async () => {
             audioRef.current.srcObject = stream;
           }
         } else {
-          // If audio is turned off, stop the audio track
+          // If audio is turned off, stop the audio track and clear the srcObject
           if (audioRef.current) {
             const stream = audioRef.current.srcObject;
             if (stream) {
@@ -130,9 +130,9 @@ const handleStartRecording = async () => {
         console.error("Error accessing audio:", error);
       }
     };
-
+  
     accessAudio();
-
+  
     return () => {
       if (!isAudioOn && audioRef.current) {
         const stream = audioRef.current.srcObject;
@@ -140,9 +140,11 @@ const handleStartRecording = async () => {
           const tracks = stream.getTracks();
           tracks.forEach((track) => track.stop());
         }
+        audioRef.current.srcObject = null;
       }
     };
-  });
+  }, [isAudioOn]);
+  
 
   const handleToggleCamera = () => {
     setIsCameraOn((prevState) => !prevState);
