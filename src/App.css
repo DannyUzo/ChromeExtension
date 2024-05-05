@@ -46,8 +46,7 @@
   object-fit: cover;
 }
 .text p {
-  color: #413c6d;
-  font-family: Work Sans;
+  color: #191728;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -81,18 +80,18 @@
 }
 .video,
 .audio {
-  font-family: Work Sans;
-  color: #120b48;
+  font-family: Tahoma;
+  color: #1a1a1a;
   font-size: 18px;
   justify-content: space-between;
   display: flex;
   align-items: center;
   padding: 12px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   width: 100%;
   border-radius: 12px;
-  border: 2px solid #100a42;
+  border: 2px solid #1a1a1a;
 }
 .box {
   display: flex;
@@ -120,21 +119,6 @@
   width: 24px;
   height: 24px;
 }
-/* .recording{
-  font-family: Work Sans;
-  color: white;
-  font-size: 18px;
-  background-color: #120B48;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  padding: 12px;
-font-style: normal;
-font-weight: 500;
-  width: 100%;
-border-radius:  12px;
-border: 2px solid #100A42;
-} */
 .toggle {
   margin-top: -20px;
   margin-left: 10px;
