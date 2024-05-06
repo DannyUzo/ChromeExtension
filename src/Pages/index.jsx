@@ -149,8 +149,7 @@ const handleStartRecording = async () => {
   const handleToggleCamera = () => {
     setIsCameraOn((prevState) => !prevState);
   };
-
-  const handleToggleAudio = () => {
+   const handleToggleAudio = () => {
     setIsAudioOn((prevState) => !prevState);
   };
 
