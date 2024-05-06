@@ -167,14 +167,12 @@ const handleStartRecording = async () => {
       setRecording(false); // Update the recording state to false
       setStream(null); // Clear the stream from state
       handleSaveRecording();
-      // Stop the MediaRecorder instance
       if (
         mediaRecorderRef.current &&
         mediaRecorderRef.current.state !== "inactive"
       ) {
         mediaRecorderRef.current.stop();
       }
-
       // Set the src attribute of the video element
       if (videoRef.current) {
         videoRef.current.src = linkRef.current;
